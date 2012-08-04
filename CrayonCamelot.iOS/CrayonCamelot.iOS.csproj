@@ -23,6 +23,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchLink>None</MtouchLink>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -79,6 +80,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -86,6 +88,23 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="..\CrayonCamelot.Shared\Crayon.cs">
+      <Link>CrayonCamelot.Shared\Crayon.cs</Link>
+    </Compile>
+    <Compile Include="ViewControllers\ColoringViewController.cs" />
+    <Compile Include="Widgets\Canvas.cs" />
+    <Compile Include="ViewControllers\ImageListViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="CrayonCamelot.Shared\" />
+    <Folder Include="Widgets\" />
+    <Folder Include="ViewControllers\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\CrayonCamelot.Shared\Images\Dragon.jpeg">
+      <Link>Images\Dragon.jpeg</Link>
+    </Content>
+  </ItemGroup>
 </Project>

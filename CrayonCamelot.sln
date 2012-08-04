@@ -1,7 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrayonCamelot", "CrayonCamelot\CrayonCamelot.csproj", "{27DE3A35-1CF4-49BF-AEC3-D8274570C3E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrayonCamelot.iOS", "CrayonCamelot.iOS\CrayonCamelot.iOS.csproj", "{27DE3A35-1CF4-49BF-AEC3-D8274570C3E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrayonCamelot.Shared", "CrayonCamelot.Shared\CrayonCamelot.Shared.csproj", "{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +27,20 @@ Global
 		{27DE3A35-1CF4-49BF-AEC3-D8274570C3E2}.Release|iPhone.Build.0 = Release|iPhone
 		{27DE3A35-1CF4-49BF-AEC3-D8274570C3E2}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{27DE3A35-1CF4-49BF-AEC3-D8274570C3E2}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Release|iPhone.Build.0 = Release|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B3D4B687-DE57-4D4D-99EA-92FC4378FC0D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = CrayonCamelot\CrayonCamelot.csproj
+		StartupItem = CrayonCamelot\CrayonCamelot.iOS.csproj
 	EndGlobalSection
 EndGlobal

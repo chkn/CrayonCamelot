@@ -5,7 +5,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace CrayonCamelot
+namespace CrayonCamelot.iOS
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the 
 	// User Interface of the application, as well as listening (and optionally responding) to 
@@ -15,6 +15,7 @@ namespace CrayonCamelot
 	{
 		// class-level declarations
 		UIWindow window;
+		UINavigationController nav;
 
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this 
@@ -27,10 +28,10 @@ namespace CrayonCamelot
 		{
 			// create a new window instance based on the screen size
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
-			
-			// If you have defined a view, add it here:
-			// window.AddSubview (navigationController.View);
-			
+
+			nav = new UINavigationController (new ImageListViewController ());
+			window.RootViewController = nav;
+
 			// make the window visible
 			window.MakeKeyAndVisible ();
 			
