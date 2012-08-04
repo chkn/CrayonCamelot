@@ -28,7 +28,7 @@ namespace CrayonCamelot.iOS {
 			foreach (var imageFile in Directory.EnumerateFiles (imagesDirectory)) {
 				var image = UIImage.FromFile (imageFile);
 				if (image == null) {
-					Console.WriteLine ("WARN: couldn't load image: {0}", imageFile);
+					Application.Log ("WARN: couldn't load image: {0}", imageFile);
 					continue;
 				}
 

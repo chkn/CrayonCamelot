@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace CrayonCamelot.Shared {
 
@@ -13,6 +14,12 @@ namespace CrayonCamelot.Shared {
 					crayons = Crayon.LoadCrayons (CRAYONS_FILE);
 				return crayons;
 			}
+		}
+
+		[Conditional ("DEBUG")]
+		public static void Log (string format, params object [] args)
+		{
+			Console.WriteLine (format, args);
 		}
 	 
 	}

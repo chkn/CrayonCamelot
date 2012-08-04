@@ -9,6 +9,7 @@ namespace CrayonCamelot.iOS {
 
 	public class ColoringViewController : UIViewController {
 
+		Canvas  canvas;
 		UIImage image;
 
 		public ColoringViewController (UIImage image, string imageTitle)
@@ -21,10 +22,21 @@ namespace CrayonCamelot.iOS {
 		{
 			base.LoadView ();
 
-			var canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, Application.Crayons);
+			canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, InterfaceOrientation, Application.Crayons);
 			canvas.Image = image;
 
 			View = canvas;
+		}
+
+		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
+		{
+			return true;
+		}
+
+		public override void WillRotate (UIInterfaceOrientation toInterfaceOrientation, double duration)
+		{
+			base.WillRotate (toInterfaceOrientation, duration);
+			canvas.Orientation = toInterfaceOrientation;
 		}
 	}
 }
