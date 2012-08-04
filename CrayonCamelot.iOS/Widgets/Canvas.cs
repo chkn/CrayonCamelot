@@ -15,6 +15,7 @@ namespace CrayonCamelot.iOS {
 
 		const int CRAYON_START = 20;
 		const int CRAYON_SPACING = 30;
+		List<PointF> Points = new List<PointF>();
 
 		UIImage image;
 		public UIImage Image {
@@ -63,10 +64,9 @@ namespace CrayonCamelot.iOS {
 			foreach (var touch in touches) {
 				touchedCrayon = GetTouchingCrayon (touch);
 				if (touchedCrayon != null)
-					return;
+					 return; 
+				Color();
 			}
-
-			//draw some stuff
 		}
 
 		public override void TouchesMoved (NSSet touchSet, UIEvent evt)
@@ -82,8 +82,11 @@ namespace CrayonCamelot.iOS {
 				foreach (var crayon in Crayons)
 					crayon.Selected = false;
 				touchedCrayon.Selected = true;
-				SetNeedsDisplay ();
 			}
+			else {
+				//save as bitmap
+			}
+			SetNeedsDisplay ();
 		}
 
 		Crayon GetTouchingCrayon (UITouch touch)
@@ -111,6 +114,12 @@ namespace CrayonCamelot.iOS {
 				pos += crayon.Width + CRAYON_SPACING;
 			}
 			return null;
+		}
+
+		void Color(UITouch touch)
+		{
+			PointF point = touch.LocationInView(this);
+			Points.Add (point);
 		}
 
 		public override void Draw (RectangleF rect)
