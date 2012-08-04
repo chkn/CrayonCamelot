@@ -1,5 +1,10 @@
 <ArrayOfCrayon>
-	<Crayon Name="Red" R="255" G="0" B="0" />
-	<Crayon Name="Green" R="0" G="255" B="0" />
-	<Crayon Name="Blue" R="0" G="0" B="255" />
+	<Crayon Name="Ruby Slipper Red" R="255" G="0" B="0" />
+	<Crayon Name="Turtle Green" R="0" G="255" B="0" />
+	<Crayon Name="Sapphire Blue" R="0" G="0" B="255" />
+	<Crayon Name="Nemo Orange" R="0" G="0" B="255" />
+	<Crayon Name="Submarine Yellow" R="0" G="0" B="255" />
+	<Crayon Name="Chocolate Brown" R="0" G="0" B="255" />
+	<Crayon Name="Snow White" R="0" G="0" B="255" />
+	<Crayon Name="Licorice Black" R="0" G="0" B="255" />
 </ArrayOfCrayon>
