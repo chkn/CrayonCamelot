@@ -94,6 +94,9 @@
     <Compile Include="ViewControllers\ColoringViewController.cs" />
     <Compile Include="Widgets\Canvas.cs" />
     <Compile Include="ViewControllers\ImageListViewController.cs" />
+    <Compile Include="..\CrayonCamelot.Shared\Application.cs">
+      <Link>Application.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -105,6 +108,9 @@
   <ItemGroup>
     <Content Include="..\CrayonCamelot.Shared\Images\Dragon.jpeg">
       <Link>Images\Dragon.jpeg</Link>
+    </Content>
+    <Content Include="..\CrayonCamelot.Shared\Crayons.xml">
+      <Link>Crayons.xml</Link>
     </Content>
   </ItemGroup>
 </Project>

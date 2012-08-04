@@ -1,8 +1,11 @@
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
+
+using CrayonCamelot.Shared;
 
 namespace CrayonCamelot.iOS {
 
@@ -18,9 +21,15 @@ namespace CrayonCamelot.iOS {
 			}
 		}
 
-		public Canvas (RectangleF frame)
+		public Crayon [] Crayons {
+			get;
+			private set;
+		}
+
+		public Canvas (RectangleF frame, Crayon [] crayons)
 			: base (frame)
 		{
+			Crayons = crayons;
 			BackgroundColor = UIColor.White;
 		}
 

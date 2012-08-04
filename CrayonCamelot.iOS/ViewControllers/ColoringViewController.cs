@@ -3,6 +3,8 @@ using System;
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 
+using CrayonCamelot.Shared;
+
 namespace CrayonCamelot.iOS {
 
 	public class ColoringViewController : UIViewController {
@@ -19,7 +21,7 @@ namespace CrayonCamelot.iOS {
 		{
 			base.LoadView ();
 
-			var canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame);
+			var canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, Application.Crayons);
 			canvas.Image = image;
 
 			View = canvas;

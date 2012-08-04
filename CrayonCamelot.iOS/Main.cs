@@ -7,7 +7,7 @@ using MonoTouch.UIKit;
 
 namespace CrayonCamelot
 {
-	public class Application
+	public class MainClass
 	{
 		// This is the main entry point of the application.
 		static void Main (string[] args)

@@ -1,0 +1,5 @@
+<ArrayOfCrayon>
+	<Crayon Name="Red" R="255" G="0" B="0" />
+	<Crayon Name="Green" R="0" G="255" B="0" />
+	<Crayon Name="Blue" R="0" G="0" B="255" />
+</ArrayOfCrayon>

@@ -35,11 +35,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Crayon.cs" />
+    <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\Dragon.jpeg" />
+    <None Include="Crayons.xml" />
   </ItemGroup>
 </Project>
