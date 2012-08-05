@@ -158,6 +158,11 @@ namespace CrayonCamelot.iOS {
 			if(Points.Any()) {
 				ctx.BeginPath();
 				ctx.MoveTo (Points.First().X, Points.First().Y);
+				ctx.SetLineWidth(10);
+				foreach (var crayon in Crayons) {
+					if(crayon.Selected)
+						ctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+				}
 				//set fill color with current crayons
 				foreach (var point in Points) {
 					ctx.AddLineToPoint(point.X, point.Y);
@@ -174,7 +179,7 @@ namespace CrayonCamelot.iOS {
 
 				case UIInterfaceOrientation.Portrait:
 				case UIInterfaceOrientation.PortraitUpsideDown:
-					ctx.TranslateCTM (frame.Width - crayon.Length, frame.Height - pos);
+					ctx.TranslateCTM (frame.Width - crayon.Length, pos);
 					ctx.RotateCTM (-(float)Math.PI / 2f);
 					break;
 
