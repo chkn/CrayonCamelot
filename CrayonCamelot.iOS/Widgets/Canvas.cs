@@ -13,6 +13,8 @@ namespace CrayonCamelot.iOS {
 
 	public class Canvas : UIView {
 
+		static readonly CGColorSpace colorSpace = CGColorSpace.CreateDeviceRGB();
+
 		const int CRAYON_START = 50;
 		const int CRAYON_SPACING = 30;
 		List<PointF> Points = new List<PointF>();
@@ -217,12 +219,52 @@ namespace CrayonCamelot.iOS {
 			dctx.StrokePath();
 		}
 
-		void DrawCrayon (CGContext ctx, Crayon crayon)
+		void DrawCrayon (CGContext context, Crayon crayon)
 		{
+			/*
 			ctx.BeginPath ();
 			ctx.SetFillColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
 			ctx.AddRect (new RectangleF (0, 0, crayon.Width, crayon.Length));
 			ctx.FillPath ();
+			*/
+
+			// I <3 Paintcode
+
+			//// Color Declarations
+			var gradientColor  = UIColor.FromRGBA(crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1.00f);
+			var gradientColor2 = UIColor.FromRGBA(crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 0.69f);
+			var gradientColor3 = UIColor.FromRGBA(crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 0.37f);
+
+			//// Gradient Declarations
+			var gradientColors = new CGColor [] {
+				gradientColor.CGColor,
+				gradientColor2.CGColor,
+				gradientColor3.CGColor, 
+				gradientColor2.CGColor,
+				gradientColor.CGColor
+			};
+			var gradientLocations = new float [] {0, 0.37f, 0.66f, 1, 1};
+			var gradient = new CGGradient(colorSpace, gradientColors, gradientLocations);
+
+
+			//// Rectangle Drawing
+			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(0.5f, -0.5f, 25, 100), UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(8, 8));
+			context.SaveState();
+			rectanglePath.AddClip();
+			context.DrawLinearGradient(gradient, new PointF(0.5f, 49.5f), new PointF(25.5f, 49.5f), 0);
+			context.RestoreState();
+
+
+
+			//// Bezier Drawing
+			UIBezierPath bezierPath = new UIBezierPath();
+			bezierPath.MoveTo(new PointF(3.5f, 95.5f));
+			bezierPath.AddCurveToPoint(new PointF(12, 119.91f), new PointF(6.5f, 102.43f), new PointF(9.79f, 124.27f));
+			bezierPath.AddCurveToPoint(new PointF(22.5f, 95.5f), new PointF(16.3f, 111.43f), new PointF(22.5f, 95.5f));
+			context.SaveState();
+			bezierPath.AddClip();
+			context.DrawLinearGradient(gradient, new PointF(3.5f, 107.99f), new PointF(22.5f, 107.99f), 0);
+			context.RestoreState();
 		}
 	}
 }
