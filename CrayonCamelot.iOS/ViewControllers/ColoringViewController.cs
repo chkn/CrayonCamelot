@@ -23,7 +23,7 @@ namespace CrayonCamelot.iOS {
 			base.LoadView ();
 
 			canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, InterfaceOrientation, Application.Crayons);
-			canvas.Image = image;
+			canvas.Background = image;
 
 			View = canvas;
 		}

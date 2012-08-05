@@ -10,8 +10,10 @@ namespace CrayonCamelot.Shared {
 		static Crayon [] crayons;
 		public static Crayon [] Crayons {
 			get {
-				if (crayons == null)
+				if (crayons == null) {
 					crayons = Crayon.LoadCrayons (CRAYONS_FILE);
+					crayons [0].Selected = true;
+				}
 				return crayons;
 			}
 		}

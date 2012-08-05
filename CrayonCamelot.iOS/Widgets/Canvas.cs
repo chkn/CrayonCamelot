@@ -13,18 +13,23 @@ namespace CrayonCamelot.iOS {
 
 	public class Canvas : UIView {
 
-		const int CRAYON_START = 20;
+		const int CRAYON_START = 50;
 		const int CRAYON_SPACING = 30;
 		List<PointF> Points = new List<PointF>();
 
-		UIImage image;
-		public UIImage Image {
-			get { return image; }
+		UIImage background;
+		public UIImage Background {
+			get { return background; }
 			set {
-				if (value != image)
+				if (value != background)
 					SetNeedsDisplay ();
-				image = value;
+				background = value;
 			}
+		}
+
+		public CGLayer Drawing {
+			get;
+			private set;
 		}
 
 		UIInterfaceOrientation orientation;
@@ -90,7 +95,8 @@ namespace CrayonCamelot.iOS {
 
 			} else {
 				AddPoint (touchSet.ToArray<UITouch> ());
-				//save as bitmap
+				DrawPoints (Drawing.Context);
+				Points.Clear ();
 			}
 			SetNeedsDisplay ();
 		}
@@ -140,7 +146,7 @@ namespace CrayonCamelot.iOS {
 		{
 			var ctx = UIGraphics.GetCurrentContext ();
 			var frame = Frame;
-			var imageSize = image.Size;
+			var imageSize = background.Size;
 
 			ctx.SaveState ();
 			ctx.TranslateCTM (0, frame.Height);
@@ -151,24 +157,19 @@ namespace CrayonCamelot.iOS {
 				frame.Height / 2 - imageSize.Height / 2,
 				imageSize.Width,
 				imageSize.Height),
-			    image.CGImage);
+			    background.CGImage);
 
 			ctx.RestoreState ();
 
-			if(Points.Any()) {
-				ctx.BeginPath();
-				ctx.MoveTo (Points.First().X, Points.First().Y);
-				ctx.SetLineWidth(10);
-				foreach (var crayon in Crayons) {
-					if(crayon.Selected)
-						ctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
-				}
-				//set fill color with current crayons
-				foreach (var point in Points) {
-					ctx.AddLineToPoint(point.X, point.Y);
-				}
-				ctx.StrokePath();
+			if (Points.Any ()) {
+				if (Drawing == null)
+					Drawing = CGLayer.Create (ctx, frame.Size);
+
+				DrawPoints (ctx);
 			}
+
+			if (Drawing != null)
+				ctx.DrawLayer (Drawing, PointF.Empty);
 
 			var pos = CRAYON_START;
 			foreach (var crayon in Crayons) {
@@ -200,7 +201,23 @@ namespace CrayonCamelot.iOS {
 			}
 		}
 
-		public void DrawCrayon (CGContext ctx, Crayon crayon)
+		void DrawPoints (CGContext dctx)
+		{
+			dctx.BeginPath ();
+			dctx.MoveTo (Points.First().X, Points.First().Y);
+			dctx.SetLineWidth(10);
+			foreach (var crayon in Crayons) {
+				if(crayon.Selected)
+					dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+			}
+			//set fill color with current crayons
+			foreach (var point in Points) {
+				dctx.AddLineToPoint(point.X, point.Y);
+			}
+			dctx.StrokePath();
+		}
+
+		void DrawCrayon (CGContext ctx, Crayon crayon)
 		{
 			ctx.BeginPath ();
 			ctx.SetFillColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
