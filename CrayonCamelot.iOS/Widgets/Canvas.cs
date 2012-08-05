@@ -188,7 +188,7 @@ namespace CrayonCamelot.iOS {
 
 				case UIInterfaceOrientation.LandscapeLeft:
 				case UIInterfaceOrientation.LandscapeRight:
-					ctx.TranslateCTM (frame.Width - pos - crayon.Width, 0);
+					ctx.TranslateCTM (frame.Width - pos - crayon.Width, frame.Height - crayon.Length);
 					break;
 
 				default:
@@ -221,13 +221,6 @@ namespace CrayonCamelot.iOS {
 
 		void DrawCrayon (CGContext context, Crayon crayon)
 		{
-			/*
-			ctx.BeginPath ();
-			ctx.SetFillColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
-			ctx.AddRect (new RectangleF (0, 0, crayon.Width, crayon.Length));
-			ctx.FillPath ();
-			*/
-
 			// I <3 Paintcode
 
 			//// Color Declarations
