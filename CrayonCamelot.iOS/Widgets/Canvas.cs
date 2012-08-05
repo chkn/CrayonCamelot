@@ -65,7 +65,7 @@ namespace CrayonCamelot.iOS {
 				touchedCrayon = GetTouchingCrayon (touch);
 				if (touchedCrayon != null)
 					 return; 
-				Color();
+				Color(touch);
 			}
 		}
 
@@ -106,8 +106,8 @@ namespace CrayonCamelot.iOS {
 						return crayon;
 					break;
 
-				//case UIInterfaceOrientation.LandscapeLeft:
-				//case UIInterfaceOrientation.LandscapeRight:
+				//add case UIInterfaceOrientation.LandscapeLeft:
+				//add case UIInterfaceOrientation.LandscapeRight:
 
 				}
 
@@ -137,6 +137,16 @@ namespace CrayonCamelot.iOS {
 				imageSize.Width,
 				imageSize.Height),
 			    image.CGImage);
+
+			if(Points.Any()) {
+				ctx.BeginPath();
+				ctx.MoveTo (Points.First().X, Points.First().Y);
+				//set fill color with current crayons
+				foreach (var point in Points) {
+					ctx.AddLineToPoint(point.X, point.Y);
+				}
+				ctx.StrokePath();
+			}
 
 			var pos = CRAYON_START;
 			foreach (var crayon in Crayons) {
