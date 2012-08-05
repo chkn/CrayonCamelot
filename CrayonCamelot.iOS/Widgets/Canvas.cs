@@ -106,8 +106,13 @@ namespace CrayonCamelot.iOS {
 						return crayon;
 					break;
 
-				//add case UIInterfaceOrientation.LandscapeLeft:
-				//add case UIInterfaceOrientation.LandscapeRight:
+				case UIInterfaceOrientation.LandscapeLeft:
+				case UIInterfaceOrientation.LandscapeRight:
+					if ((location.Y > Frame.Height - crayon.Length)
+					 && (location.X < Frame.Width - pos)
+					 && (location.X > Frame.Width - pos - CRAYON_SPACING / 2 - crayon.Width - CRAYON_SPACING / 2))
+						return crayon;
+					break;
 
 				}
 
