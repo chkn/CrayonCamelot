@@ -239,31 +239,28 @@ namespace CrayonCamelot.iOS {
 			var gradientColors = new CGColor [] {
 				gradientColor.CGColor,
 				gradientColor2.CGColor,
-				gradientColor3.CGColor, 
+				gradientColor3.CGColor,
 				gradientColor2.CGColor,
 				gradientColor.CGColor
 			};
 			var gradientLocations = new float [] {0, 0.37f, 0.66f, 1, 1};
 			var gradient = new CGGradient(colorSpace, gradientColors, gradientLocations);
 
-
 			//// Rectangle Drawing
-			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(0.5f, -0.5f, 25, 100), UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(8, 8));
+			var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(0.5f, 20.5f, 25, 100), UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(8, 8));
 			context.SaveState();
 			rectanglePath.AddClip();
-			context.DrawLinearGradient(gradient, new PointF(0.5f, 49.5f), new PointF(25.5f, 49.5f), 0);
+			context.DrawLinearGradient(gradient, new PointF(0.5f, 70.5f), new PointF(25.5f, 70.5f), 0);
 			context.RestoreState();
-
-
 
 			//// Bezier Drawing
 			UIBezierPath bezierPath = new UIBezierPath();
-			bezierPath.MoveTo(new PointF(3.5f, 95.5f));
-			bezierPath.AddCurveToPoint(new PointF(12, 119.91f), new PointF(6.5f, 102.43f), new PointF(9.79f, 124.27f));
-			bezierPath.AddCurveToPoint(new PointF(22.5f, 95.5f), new PointF(16.3f, 111.43f), new PointF(22.5f, 95.5f));
+			bezierPath.MoveTo(new PointF(3.5f, 24.5f));
+			bezierPath.AddCurveToPoint(new PointF(12, 0.09f), new PointF(6.5f, 17.57f), new PointF(9.79f, -4.27f));
+			bezierPath.AddCurveToPoint(new PointF(22.5f, 24.5f), new PointF(16.3f, 8.57f), new PointF(22.5f, 24.5f));
 			context.SaveState();
 			bezierPath.AddClip();
-			context.DrawLinearGradient(gradient, new PointF(3.5f, 107.99f), new PointF(22.5f, 107.99f), 0);
+			context.DrawLinearGradient(gradient, new PointF(3.5f, 12.01f), new PointF(22.5f, 12.01f), 0);
 			context.RestoreState();
 		}
 	}
