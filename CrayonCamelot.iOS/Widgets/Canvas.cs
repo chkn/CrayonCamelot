@@ -60,20 +60,25 @@ namespace CrayonCamelot.iOS {
 		public override void TouchesBegan (NSSet touchSet, UIEvent evt)
 		{
 			var touches = touchSet.ToArray<UITouch> ();
-
 			foreach (var touch in touches) {
 				touchedCrayon = GetTouchingCrayon (touch);
 				if (touchedCrayon != null)
 					 return; 
-				Color(touch);
 			}
+
+			AddPoint (touches);
 		}
 
 		public override void TouchesMoved (NSSet touchSet, UIEvent evt)
 		{
 			var touches = touchSet.ToArray<UITouch> ();
-			if (touches.All (touch => GetTouchingCrayon (touch) == null))
-				touchedCrayon = null;
+			if (touchedCrayon != null) {
+				if (touches.All (touch => GetTouchingCrayon (touch) == null))
+					touchedCrayon = null;
+				return;
+			}
+
+			AddPoint (touches);
 		}
 
 		public override void TouchesEnded (NSSet touchSet, UIEvent evt)
@@ -82,8 +87,9 @@ namespace CrayonCamelot.iOS {
 				foreach (var crayon in Crayons)
 					crayon.Selected = false;
 				touchedCrayon.Selected = true;
-			}
-			else {
+
+			} else {
+				AddPoint (touchSet.ToArray<UITouch> ());
 				//save as bitmap
 			}
 			SetNeedsDisplay ();
@@ -121,10 +127,13 @@ namespace CrayonCamelot.iOS {
 			return null;
 		}
 
-		void Color(UITouch touch)
+		void AddPoint (UITouch [] touches)
 		{
-			PointF point = touch.LocationInView(this);
-			Points.Add (point);
+			foreach (var touch in touches) {
+				PointF point = touch.LocationInView(this);
+				Points.Add (point);
+			}
+			SetNeedsDisplay ();
 		}
 
 		public override void Draw (RectangleF rect)
@@ -133,6 +142,7 @@ namespace CrayonCamelot.iOS {
 			var frame = Frame;
 			var imageSize = image.Size;
 
+			ctx.SaveState ();
 			ctx.TranslateCTM (0, frame.Height);
 			ctx.ScaleCTM (1, -1);
 
@@ -142,6 +152,8 @@ namespace CrayonCamelot.iOS {
 				imageSize.Width,
 				imageSize.Height),
 			    image.CGImage);
+
+			ctx.RestoreState ();
 
 			if(Points.Any()) {
 				ctx.BeginPath();
