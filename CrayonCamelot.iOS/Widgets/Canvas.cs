@@ -56,6 +56,7 @@ namespace CrayonCamelot.iOS {
 
 		Crayon touchedCrayon;
 
+		//creates the layer on which we color
 		public Canvas (RectangleF frame, UIInterfaceOrientation orientation, Crayon [] crayons)
 			: base (frame)
 		{
@@ -64,6 +65,8 @@ namespace CrayonCamelot.iOS {
 			BackgroundColor = UIColor.White;
 		}
 
+
+		/******Touches******/
 		public override void TouchesBegan (NSSet touchSet, UIEvent evt)
 		{
 			var touches = touchSet.ToArray<UITouch> ();
@@ -163,15 +166,13 @@ namespace CrayonCamelot.iOS {
 
 			ctx.RestoreState ();
 
+			if (Drawing != null)
+					ctx.DrawLayer (Drawing, PointF.Empty);
 			if (Points.Any ()) {
 				if (Drawing == null)
 					Drawing = CGLayer.Create (ctx, frame.Size);
-
 				DrawPoints (ctx);
 			}
-
-			if (Drawing != null)
-				ctx.DrawLayer (Drawing, PointF.Empty);
 
 			var pos = CRAYON_START;
 			foreach (var crayon in Crayons) {
@@ -203,14 +204,23 @@ namespace CrayonCamelot.iOS {
 			}
 		}
 
+		//does the actual coloring
 		void DrawPoints (CGContext dctx)
 		{
 			dctx.BeginPath ();
 			dctx.MoveTo (Points.First().X, Points.First().Y);
 			dctx.SetLineWidth(10);
 			foreach (var crayon in Crayons) {
-				if(crayon.Selected)
-					dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+				if(crayon.Selected) {
+					if (crayon.Name == "Eraser") {
+						dctx.SetBlendMode  (CGBlendMode.Clear);
+						//dctx.SetStrokeColor (UIColor.FromPatternImage(Background).CGColor);
+					} else {
+						dctx.SetBlendMode  (CGBlendMode.Normal);
+						dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+					}
+					dctx.SetLineCap (CGLineCap.Round);
+				}
 			}
 			//set fill color with current crayons
 			foreach (var point in Points) {
