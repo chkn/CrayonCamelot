@@ -1,6 +1,9 @@
 using System;
-
+using System.Drawing;
+using MonoTouch.AssetsLibrary;
 using MonoTouch.UIKit;
+using MonoTouch.Foundation;
+using MonoTouch.CoreImage;
 using MonoTouch.CoreGraphics;
 
 using CrayonCamelot.Shared;
@@ -11,6 +14,7 @@ namespace CrayonCamelot.iOS {
 
 		Canvas  canvas;
 		UIImage image;
+		UISlider swatchSlider;
 
 		public ColoringViewController (UIImage image, string imageTitle)
 		{
@@ -22,8 +26,16 @@ namespace CrayonCamelot.iOS {
 		{
 			base.LoadView ();
 
+			swatchSlider = new UISlider(new RectangleF(100,  30, 210, 20));
+			swatchSlider.MinValue = 1;
+			swatchSlider.MaxValue = 40;
+			swatchSlider.Value = 10;
+
 			canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, InterfaceOrientation, Application.Crayons);
 			canvas.Background = image;
+			canvas.swatchSlider = swatchSlider;
+
+			canvas.Add (swatchSlider);
 
 			View = canvas;
 		}

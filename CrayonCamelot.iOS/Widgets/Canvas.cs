@@ -19,6 +19,8 @@ namespace CrayonCamelot.iOS {
 		const int CRAYON_SPACING = 30;
 		List<PointF> Points = new List<PointF>();
 
+
+		//set the context, image background, device orientation
 		UIImage background;
 		public UIImage Background {
 			get { return background; }
@@ -44,6 +46,7 @@ namespace CrayonCamelot.iOS {
 			}
 		}
 
+		//Crayons
 		Crayon [] crayons;
 		public Crayon [] Crayons {
 			get { return crayons; }
@@ -55,6 +58,18 @@ namespace CrayonCamelot.iOS {
 		}
 
 		Crayon touchedCrayon;
+
+		//Slider
+		UISlider swatchslider;
+		public UISlider swatchSlider {
+			get { return swatchslider; }
+			set {
+				if (value != swatchslider)
+					SetNeedsDisplay ();
+				swatchslider = value;
+			}
+		}
+	
 
 		//creates the layer on which we color
 		public Canvas (RectangleF frame, UIInterfaceOrientation orientation, Crayon [] crayons)
@@ -99,6 +114,7 @@ namespace CrayonCamelot.iOS {
 				touchedCrayon.Selected = true;
 
 			} else {
+
 				AddPoint (touchSet.ToArray<UITouch> ());
 				DrawPoints (Drawing.Context);
 				Points.Clear ();
@@ -147,6 +163,7 @@ namespace CrayonCamelot.iOS {
 			SetNeedsDisplay ();
 		}
 
+		//draw our coloring screen
 		public override void Draw (RectangleF rect)
 		{
 			var ctx = UIGraphics.GetCurrentContext ();
@@ -209,12 +226,12 @@ namespace CrayonCamelot.iOS {
 		{
 			dctx.BeginPath ();
 			dctx.MoveTo (Points.First().X, Points.First().Y);
-			dctx.SetLineWidth(10);
+			dctx.SetLineWidth(swatchSlider.Value);
 			foreach (var crayon in Crayons) {
 				if(crayon.Selected) {
 					if (crayon.Name == "Eraser") {
-						dctx.SetBlendMode  (CGBlendMode.Clear);
-						//dctx.SetStrokeColor (UIColor.FromPatternImage(Background).CGColor);
+						dctx.SetBlendMode  (CGBlendMode.Copy);
+						dctx.SetStrokeColor (UIColor.Clear.CGColor);
 					} else {
 						dctx.SetBlendMode  (CGBlendMode.Normal);
 						dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
