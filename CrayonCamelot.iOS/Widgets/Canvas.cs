@@ -69,7 +69,6 @@ namespace CrayonCamelot.iOS {
 				swatchslider = value;
 			}
 		}
-	
 
 		//creates the layer on which we color
 		public Canvas (RectangleF frame, UIInterfaceOrientation orientation, Crayon [] crayons)
@@ -126,7 +125,7 @@ namespace CrayonCamelot.iOS {
 		{
 			var location = touch.LocationInView (this);
 
-			var pos = CRAYON_START - CRAYON_SPACING / 2;
+			var pos = CRAYON_START - CRAYON_SPACING;
 			foreach (var crayon in Crayons) {
 
 				switch (Orientation) {
@@ -219,6 +218,7 @@ namespace CrayonCamelot.iOS {
 				ctx.RestoreState ();
 				pos += crayon.Width + CRAYON_SPACING;
 			}
+
 		}
 
 		//does the actual coloring

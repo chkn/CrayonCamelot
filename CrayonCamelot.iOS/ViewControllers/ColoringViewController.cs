@@ -26,7 +26,7 @@ namespace CrayonCamelot.iOS {
 		{
 			base.LoadView ();
 
-			swatchSlider = new UISlider(new RectangleF(100,  30, 210, 20));
+			swatchSlider = new UISlider(new RectangleF(50,  30, 250, 50));
 			swatchSlider.MinValue = 1;
 			swatchSlider.MaxValue = 40;
 			swatchSlider.Value = 10;
@@ -34,6 +34,7 @@ namespace CrayonCamelot.iOS {
 			canvas = new Canvas (UIScreen.MainScreen.ApplicationFrame, InterfaceOrientation, Application.Crayons);
 			canvas.Background = image;
 			canvas.swatchSlider = swatchSlider;
+
 
 			canvas.Add (swatchSlider);
 
