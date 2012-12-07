@@ -111,6 +111,7 @@ namespace CrayonCamelot.iOS {
 				foreach (var crayon in Crayons)
 					crayon.Selected = false;
 				touchedCrayon.Selected = true;
+				swatchSlider.MinimumTrackTintColor = UIColor.FromRGB(touchedCrayon.R/255f, touchedCrayon.G/255f, touchedCrayon.B/255f);
 
 			} else {
 
@@ -173,6 +174,7 @@ namespace CrayonCamelot.iOS {
 			ctx.TranslateCTM (0, frame.Height);
 			ctx.ScaleCTM (1, -1);
 
+			//TODO: Scale image if image W & H are too big
 			ctx.DrawImage (new RectangleF (
 				frame.Width / 2  - imageSize.Width / 2,
 				frame.Height / 2 - imageSize.Height / 2,
@@ -226,14 +228,16 @@ namespace CrayonCamelot.iOS {
 		{
 			dctx.BeginPath ();
 			dctx.MoveTo (Points.First().X, Points.First().Y);
-			dctx.SetLineWidth(swatchSlider.Value);
+			dctx.SetLineWidth (swatchSlider.Value);
+			dctx.SetBlendMode (CGBlendMode.Normal);
+			
 			foreach (var crayon in Crayons) {
 				if(crayon.Selected) {
 					if (crayon.Name == "Eraser") {
-						dctx.SetBlendMode  (CGBlendMode.Copy);
+						dctx.SetBlendMode (CGBlendMode.Clear);
 						dctx.SetStrokeColor (UIColor.Clear.CGColor);
 					} else {
-						dctx.SetBlendMode  (CGBlendMode.Normal);
+						dctx.SetBlendMode (CGBlendMode.Normal);
 						dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
 					}
 					dctx.SetLineCap (CGLineCap.Round);
