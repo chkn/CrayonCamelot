@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace CrayonCamelot.Shared {
 
@@ -17,6 +18,7 @@ namespace CrayonCamelot.Shared {
 				return crayons;
 			}
 		}
+
 
 		[Conditional ("DEBUG")]
 		public static void Log (string format, params object [] args)

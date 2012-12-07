@@ -59,6 +59,17 @@ namespace CrayonCamelot.iOS {
 
 		Crayon touchedCrayon;
 
+		//Swatches
+		List<UIImage> swatches;
+		public List<UIImage> Swatches {
+			get { return swatches; }
+			set {
+				if (value != swatches)
+					SetNeedsDisplay ();
+				swatches = value;
+			}
+		}
+
 		//Slider
 		UISlider swatchslider;
 		public UISlider swatchSlider {
@@ -69,14 +80,15 @@ namespace CrayonCamelot.iOS {
 				swatchslider = value;
 			}
 		}
-
-		//creates the layer on which we color
-		public Canvas (RectangleF frame, UIInterfaceOrientation orientation, Crayon [] crayons)
+		
+		public Canvas (RectangleF frame, UIInterfaceOrientation orientation, Crayon [] crayons, List<UIImage> swatches)
 			: base (frame)
 		{
 			this.orientation = orientation;
 			this.crayons = crayons;
+			this.swatches = swatches;
 			BackgroundColor = UIColor.White;
+
 		}
 
 
@@ -166,59 +178,61 @@ namespace CrayonCamelot.iOS {
 		//draw our coloring screen
 		public override void Draw (RectangleF rect)
 		{
-			var ctx = UIGraphics.GetCurrentContext ();
-			var frame = Frame;
-			var imageSize = background.Size;
+			using (var ctx = UIGraphics.GetCurrentContext () ) {
+				              
+				var frame = Frame;
+				var imageSize = background.Size;
 
-			ctx.SaveState ();
-			ctx.TranslateCTM (0, frame.Height);
-			ctx.ScaleCTM (1, -1);
-
-			//TODO: Scale image if image W & H are too big
-			ctx.DrawImage (new RectangleF (
-				frame.Width / 2  - imageSize.Width / 2,
-				frame.Height / 2 - imageSize.Height / 2,
-				imageSize.Width,
-				imageSize.Height),
-			    background.CGImage);
-
-			ctx.RestoreState ();
-
-			if (Drawing != null)
-					ctx.DrawLayer (Drawing, PointF.Empty);
-			if (Points.Any ()) {
-				if (Drawing == null)
-					Drawing = CGLayer.Create (ctx, frame.Size);
-				DrawPoints (ctx);
-			}
-
-			var pos = CRAYON_START;
-			foreach (var crayon in Crayons) {
 				ctx.SaveState ();
+				ctx.TranslateCTM (0, frame.Height);
+				ctx.ScaleCTM (1, -1);
 
-				//translate depending on orientation
-				switch (Orientation) {
-
-				case UIInterfaceOrientation.Portrait:
-				case UIInterfaceOrientation.PortraitUpsideDown:
-					ctx.TranslateCTM (frame.Width - crayon.Length, pos);
-					ctx.RotateCTM (-(float)Math.PI / 2f);
-					break;
-
-				case UIInterfaceOrientation.LandscapeLeft:
-				case UIInterfaceOrientation.LandscapeRight:
-					ctx.TranslateCTM (frame.Width - pos - crayon.Width, frame.Height - crayon.Length);
-					break;
-
-				default:
-					Application.Log ("WARN: Cannot detect device orientation");
-					break;
-				}
-
-				DrawCrayon (ctx, crayon);
+				//TODO: Scale image if image W & H are too big
+				ctx.DrawImage (new RectangleF (
+					frame.Width / 2  - imageSize.Width / 2,
+					frame.Height / 2 - imageSize.Height / 2,
+					imageSize.Width,
+					imageSize.Height),
+				    background.CGImage);
 
 				ctx.RestoreState ();
-				pos += crayon.Width + CRAYON_SPACING;
+
+				if (Drawing != null)
+					ctx.DrawLayer (Drawing, PointF.Empty);
+				if (Points.Any ()) {
+					if (Drawing == null)
+						Drawing = CGLayer.Create (ctx, frame.Size);
+					DrawPoints (ctx);
+				}
+
+				var pos = CRAYON_START;
+				foreach (var crayon in Crayons) {
+					ctx.SaveState ();
+
+					//translate depending on orientation
+					switch (Orientation) {
+
+					case UIInterfaceOrientation.Portrait:
+					case UIInterfaceOrientation.PortraitUpsideDown:
+						ctx.TranslateCTM (frame.Width - crayon.Length, pos);
+						ctx.RotateCTM (-(float)Math.PI / 2f);
+						break;
+
+					case UIInterfaceOrientation.LandscapeLeft:
+					case UIInterfaceOrientation.LandscapeRight:
+						ctx.TranslateCTM (frame.Width - pos - crayon.Width, frame.Height - crayon.Length);
+						break;
+
+					default:
+						Application.Log ("WARN: Cannot detect device orientation");
+						break;
+					}
+
+					DrawCrayon (ctx, crayon);
+
+					ctx.RestoreState ();
+					pos += crayon.Width + CRAYON_SPACING;
+				}
 			}
 
 		}
@@ -226,9 +240,12 @@ namespace CrayonCamelot.iOS {
 		//does the actual coloring
 		void DrawPoints (CGContext dctx)
 		{
+			var swatches = Swatches;
+			var swatchslider = swatchSlider;
+
 			dctx.BeginPath ();
 			dctx.MoveTo (Points.First().X, Points.First().Y);
-			dctx.SetLineWidth (swatchSlider.Value);
+			dctx.SetLineWidth (swatchslider.Value);
 			dctx.SetBlendMode (CGBlendMode.Normal);
 			
 			foreach (var crayon in Crayons) {
@@ -238,9 +255,13 @@ namespace CrayonCamelot.iOS {
 						dctx.SetStrokeColor (UIColor.Clear.CGColor);
 					} else {
 						dctx.SetBlendMode (CGBlendMode.Normal);
-						dctx.SetStrokeColor (crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+						var swatchImg = colorSwatch (swatches[0], crayon.R / 255f, crayon.G / 255f, crayon.B / 255f, 1f);
+
+						UIColor pattern = UIColor.FromPatternImage(swatchImg);
+						dctx.SetStrokeColor(pattern.CGColor);
 					}
 					dctx.SetLineCap (CGLineCap.Round);
+					dctx.SetLineJoin (CGLineJoin.Round);
 				}
 			}
 			//set fill color with current crayons
@@ -248,6 +269,31 @@ namespace CrayonCamelot.iOS {
 				dctx.AddLineToPoint(point.X, point.Y);
 			}
 			dctx.StrokePath();
+		}
+
+		//add a color to our colorless texture swatch crayon image transparent png thingys
+		UIImage colorSwatch (UIImage swatch, float red, float green, float blue, float alpha) {
+			UIGraphics.BeginImageContext(swatch.Size);
+			using (var dctx = UIGraphics.GetCurrentContext() ) 
+			{
+				dctx.SetFillColor(red, green, blue, alpha);
+
+				dctx.TranslateCTM(0, swatch.Size.Height);
+				dctx.ScaleCTM(1.0f, -1.0f);
+
+				dctx.SetBlendMode(CGBlendMode.ColorBurn);
+				var container = new RectangleF(0, 0, swatch.Size.Width, swatch.Size.Height);
+				dctx.DrawImage(container, swatch.CGImage);
+
+				dctx.ClipToMask(container, swatch.CGImage);
+				dctx.AddRect(container);
+				dctx.DrawPath (CGPathDrawingMode.Fill);
+
+				UIImage colored_swatch = UIGraphics.GetImageFromCurrentImageContext();
+				UIGraphics.EndImageContext();
+
+				return colored_swatch;
+			}
 		}
 
 		void DrawCrayon (CGContext context, Crayon crayon)
